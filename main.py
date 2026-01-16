@@ -15,8 +15,8 @@ def main() -> None:
     
     cfg = {
         "endpoint": utils_get_env_str("LMSTUDIO_ENDPOINT", "http://localhost:1234/v1/chat/completions"),
-        "model_id": utils_get_env_str("LMSTUDIO_MODEL", "qwen3-vl-8b-instruct"),
-        "timeout": utils_get_env_int("LMSTUDIO_TIMEOUT", 240),
+        "model_id": utils_get_env_str("LMSTUDIO_MODEL", "qwen3-vl-4b-instruct"),
+        "timeout": utils_get_env_int("LMSTUDIO_TIMEOUT", 960),
         "temperature": utils_get_env_float("LMSTUDIO_TEMPERATURE", 0.5),
         "max_tokens": utils_get_env_int("LMSTUDIO_MAX_TOKENS", 2048),
         "target_w": utils_get_env_int("AGENT_IMAGE_W", 1536),
@@ -24,7 +24,7 @@ def main() -> None:
         "dump_dir": utils_get_env_str("AGENT_DUMP_DIR", "dumps"),
         "dump_prefix": utils_get_env_str("AGENT_DUMP_PREFIX", "screen_"),
         "dump_start": utils_get_env_int("AGENT_DUMP_START", 1),
-        "max_steps": utils_get_env_int("AGENT_MAX_STEPS", 50),
+        "max_steps": utils_get_env_int("AGENT_MAX_STEPS", 15),
         "step_delay": utils_get_env_float("AGENT_STEP_DELAY", 0.4),
     }
     
