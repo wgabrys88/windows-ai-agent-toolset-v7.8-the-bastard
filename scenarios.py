@@ -124,8 +124,8 @@ TOOLS_SCHEMA = [
             "description": (
                 "Executes a mouse click at specified coordinates. "
                 "Use normalized coordinate system (0-1000, where 0,0 is top-left). "
-                "Provide coordinates as box=[x,y] for a point click (recommended), "
-                "or box=[x1,y1,x2,y2] for bounding box (center will be clicked). "
+                "Provide coordinates as box=[x,y] for a point click, "
+                "or bbox_2d=[x1,y1,x2,y2] for bounding box (center will be clicked). "
                 "After clicking, always call observe_screen to verify result."
             ),
             "parameters": {
@@ -340,13 +340,9 @@ def scenarios_execute_tool(tool_name: str, arg_str: Any, call_id: str, dump_cfg:
         winapi_click_mouse()
         time.sleep(0.12)
         
-        # OPTIMIZED: Factual confirmation only, no instructions
         return {"role": "tool", "tool_call_id": call_id, "name": tool_name,
                 "content": utils_ok_payload({
-                    "action": "click_executed",
-                    "target": label,
-                    "normalized_coords": f"({cx:.1f}, {cy:.1f})",
-                    "screen_pixels": f"({px}, {py})"
+                    "action": "click_executed"
                 })}, None
     
     if tool_name == "type_text":
@@ -360,12 +356,9 @@ def scenarios_execute_tool(tool_name: str, arg_str: Any, call_id: str, dump_cfg:
         winapi_type_text(text_ascii)
         time.sleep(0.08)
         
-        # OPTIMIZED: Echo what was typed, no additional messages
         return {"role": "tool", "tool_call_id": call_id, "name": tool_name,
                 "content": utils_ok_payload({
-                    "action": "text_typed",
-                    "text": text_ascii,
-                    "length": len(text_ascii)
+                    "action": "text_typed"
                 })}, None
     
     if tool_name == "press_key":
@@ -379,11 +372,9 @@ def scenarios_execute_tool(tool_name: str, arg_str: Any, call_id: str, dump_cfg:
             winapi_press_key(key)
             time.sleep(0.08)
             
-            # OPTIMIZED: Simple confirmation
             return {"role": "tool", "tool_call_id": call_id, "name": tool_name,
                     "content": utils_ok_payload({
-                        "action": "key_pressed",
-                        "key": key
+                        "action": "key_pressed"
                     })}, None
         except ValueError as e:
             return {"role": "tool", "tool_call_id": call_id, "name": tool_name, "content": utils_err_payload("invalid_key", str(e))}, None
@@ -406,12 +397,9 @@ def scenarios_execute_tool(tool_name: str, arg_str: Any, call_id: str, dump_cfg:
         winapi_scroll_down()
         time.sleep(0.08)
         
-        # OPTIMIZED: Factual report
         return {"role": "tool", "tool_call_id": call_id, "name": tool_name,
                 "content": utils_ok_payload({
-                    "action": "scrolled_down",
-                    "normalized_position": f"({cx:.1f}, {cy:.1f})",
-                    "amount": 120
+                    "action": "scrolled_down"
                 })}, None
     
     return {"role": "tool", "tool_call_id": call_id, "name": tool_name,
